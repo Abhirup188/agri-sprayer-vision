@@ -1,0 +1,23 @@
+# merged_agri_data.yaml
+path: ./datasets
+train: images/train
+val: images/val
+test: images/test
+
+nc: 14
+
+names:
+  0: crop
+  1: weed
+  2: ants
+  3: bees
+  4: beetles
+  5: caterpillars
+  6: earthworms
+  7: earwigs
+  8: grasshoppers
+  9: moths
+  10: slugs
+  11: snails
+  12: wasps
+  13: weevils
