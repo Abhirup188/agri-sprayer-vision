@@ -6,8 +6,8 @@ import torch
 
 print("torch", torch.__version__, "cuda runtime", torch.version.cuda, "cuda available", torch.cuda.is_available())
 
-# cap = cv2.VideoCapture("videos/plant_infection.mp4") 
-cap = cv2.VideoCapture("videos/healthy plant.mp4") 
+cap = cv2.VideoCapture("videos/plant_infection.mp4") 
+# cap = cv2.VideoCapture("videos/healthy plant.mp4") 
 MODEL_PATH = "runs/detect/train3/weights/best.pt" 
 
 model = YOLO(MODEL_PATH)
@@ -53,26 +53,32 @@ while True:
             area_percentage = (bbox_area / frame_area) * 100
 
             if cls == 0:
-                action = "SAFE (No Spray)"
-                color = (255, 0, 0) 
+                status = "HEALTHY"
+                action = "NO ACTION"
+                color = (0,255,0)
             else:
+                threat_detected = True
                 if area_percentage < 5.0:
-                    action = "MILD (Short Spray 0.5s)"
+                    status = "MILD INFECTION"
+                    action = "Short Spray (0.5s)"
                     color = (0, 165, 255) 
                 else:
-                    action = "SEVERE (Long Spray 2.0s)"
+                    status = "SEVERE INFECTION"
+                    action = "Long Spray (2.0s)"
                     color = (0, 0, 255) 
 
             cvzone.cornerRect(img, (x1, y1, w, h), l=15, t=2, colorR=color, colorC=color)
-            label = f"{detected_class} {conf} | {action}"
-            cvzone.putTextRect(img, label, (max(0, x1), max(35, y1 - 10)), scale=1, thickness=1, colorR=color)
+            label = f"{status}: {detected_class} ({conf})"
+            cvzone.putTextRect(img, label, (max(0, x1), max(35, y1 - 10)), scale=0.8, thickness=1, colorR=color)
+            
+            cvzone.putTextRect(img, action, (max(0, x1), max(65, y1 + h + 20)), scale=0.8, thickness=1, colorR=(50, 50, 50))
 
     if not threat_detected:
         cvzone.putTextRect(img, "SYSTEM STATUS: HEALTHY ZONE - NO ACTION REQUIRED", 
                            (20, 40), scale=1.5, thickness=2, colorR=(0, 200, 0), colorT=(255,255,255))
-    else:
-        cvzone.putTextRect(img, "SYSTEM STATUS: THREAT ENGAGED - SPRAYING", 
-                           (20, 40), scale=1.5, thickness=2, colorR=(0, 0, 255), colorT=(255,255,255))
+    # else:
+    #     cvzone.putTextRect(img, "SYSTEM STATUS: THREAT ENGAGED - SPRAYING", 
+    #                        (20, 40), scale=1.5, thickness=2, colorR=(0, 0, 255), colorT=(255,255,255))
 
     cv2.imshow("SIH Smart Sprayer Vision", img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
