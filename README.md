@@ -5,6 +5,8 @@ A robust computer vision module designed for intelligent pesticide application. 
 Overview
 This repository contains the standalone vision subsystem for the agricultural sprayer project. Developed and tested in a Windows environment, the model utilizes OpenCV and YOLOv8 (via PyTorch) to achieve high-accuracy, real-time inference. The system is engineered to eventually output target coordinates that will guide a 6-DOF robotic manipulator mounted on a differential-drive rover.
 
+Demo Video: https://www.linkedin.com/posts/abhirup-chakraborty-124b49289_robotics-computervision-yolov8-activity-7437433543770927104-8Mw4?utm_source=social_share_send&utm_medium=android_app&rcm=ACoAAEYdVWwBrydCPOOs3rE_TI245Eg-bMu3uNU&utm_campaign=copy_link
+
 Tech Stack
 * Language:Python 3.x
 * Computer Vision: OpenCV
